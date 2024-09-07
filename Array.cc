@@ -912,7 +912,7 @@ unsigned int Array::width(bool constrained) const
 }
 #endif
 
-class PrintD4ArrayDimXMLWriter : public unary_function<Array::dimension &, void> {
+class PrintD4ArrayDimXMLWriter : public std::function<Array::dimension &(void)> {
     XMLWriter &xml;
     // Was this variable constrained using local/direct slicing? i.e., is d_local_constraint set?
     // If so, don't use shared dimensions; instead emit Dim elements that are anonymous.
@@ -954,7 +954,7 @@ public:
     }
 };
 
-class PrintD4ConstructorVarXMLWriter : public unary_function<BaseType *, void> {
+class PrintD4ConstructorVarXMLWriter : public std::function<BaseType *(void)> {
     XMLWriter &xml;
     bool d_constrained;
 
@@ -964,7 +964,7 @@ public:
     void operator()(BaseType *btp) { btp->print_dap4(xml, d_constrained); }
 };
 
-class PrintD4MapXMLWriter : public unary_function<D4Map *, void> {
+class PrintD4MapXMLWriter : public std::function<D4Map *(void)> {
     XMLWriter &xml;
 
 public:
@@ -1142,7 +1142,7 @@ void Array::print_as_map_xml_writer(XMLWriter &xml, bool constrained) {
     print_xml_writer_core(xml, constrained, "Map");
 }
 
-class PrintArrayDimXMLWriter : public unary_function<Array::dimension &, void> {
+class PrintArrayDimXMLWriter : public std::function<Array::dimension &(void)> {
     XMLWriter &xml;
     bool d_constrained;
 
